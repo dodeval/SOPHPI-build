@@ -37,11 +37,13 @@
 };
 
 &spi2 {
-	status = "disabled";
+	status = "okay";
 	num-cs = <1>;
+	assigned-clocks = <&clk CV181X_CLK_SPI>;
+	assigned-clock-rates = <100000000>;
 	spidev@0 {
-	compatible = "rohm,dh2228fv";
-		spi-max-frequency = <1000000>;
+		compatible = "rohm,dh2228fv";
+		spi-max-frequency = <100000000>;
 		reg = <0>;
 	};
 };

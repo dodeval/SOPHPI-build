@@ -122,7 +122,7 @@
 		compatible = "cvitek,sysdma_remap";
 		reg = <0x0 0x03000154 0x0 0x10>;
 		ch-remap = <CVI_I2S0_RX CVI_I2S2_TX CVI_I2S1_RX CVI_I2S1_TX
-					CVI_SPI_NAND CVI_SPI_NAND CVI_I2S2_RX CVI_I2S3_TX>;
+					CVI_SPI2_RX CVI_SPI2_TX CVI_I2S2_RX CVI_I2S3_TX>;
 		int_mux_base = <0x03000298>;
 	};
 
@@ -137,7 +137,7 @@
 		dma-requests = /bits/ 8 <16>;
 		chan_allocation_order = /bits/ 8 <0>;
 		chan_priority = /bits/ 8 <1>;
-		block_size = <1024>;
+		block_size = <4096>;
 		dma-masters = /bits/ 8 <2>;
 		data-width = <4 4>; /* bytes */
 		axi_tr_width = <4>; /* bytes */
@@ -238,6 +238,12 @@
 		clocks = <&clk CV181X_CLK_SPI>;
 		#address-cells = <1>;
 		#size-cells = <0>;
+		bias-pull-up;
+		cs-gpio = <&porte 18 GPIO_ACTIVE_LOW>;
+		dmas = <&dmac 4 1 1
+			&dmac 5 1 1>;
+		dma-names = "rx", "tx";
+		capability = "txrx";
 	};
 
 	spi3:spi3@041B0000 {
@@ -772,17 +778,17 @@
 		fb_reserved: cvifb {
 			alloc-ranges = <0x0 CVIMMAP_FRAMEBUFFER_ADDR 0 CVIMMAP_FRAMEBUFFER_SIZE>;
 			size = <0x0 CVIMMAP_FRAMEBUFFER_SIZE>;
-			no-map;
 		};
 	};
 
-	cvifb {
+	cvi_fb: cvifb {
 		compatible = "cvitek,fb";
 		memory-region = <&fb_reserved>;
 		reg = <0x0 0x0a088000 0x0 0x1000>;
 		reg-names = "disp";
 	};
 #endif
+
 	dwa {
 		compatible = "cvitek,dwa";
 		reg = <0x0 0x0a0c0000 0x0 0x1000>;
@@ -904,12 +910,12 @@
 	cviaudio_core {
 		compatible = "cvitek,audio";
 	};
-
+#if 0
 	cvipctrl: pinctrl@3001000 {
 		compatible = "cvitek,pinctrl-cv181x";
 		reg = <0 0x03001000 0 0x1000>;
 	};
-
+#endif
 	aliases {
 		i2c0 = &i2c0;
 		i2c1 = &i2c1;
