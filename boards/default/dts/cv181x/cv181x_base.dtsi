@@ -239,7 +239,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 		bias-pull-up;
-		cs-gpio = <&porte 18 GPIO_ACTIVE_LOW>;
+		cs-gpio = <&porta 26 GPIO_ACTIVE_LOW>;
 		dmas = <&dmac 4 1 1
 			&dmac 5 1 1>;
 		dma-names = "rx", "tx";

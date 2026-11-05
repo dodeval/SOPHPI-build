@@ -90,16 +90,33 @@ int cvi_board_init(void)
 
         // spi2 pinmux
         // mmio_write_32(0x030010D0, 0x1); // CS
-        mmio_write_32(0x030010D0, 0x3); // CS-GPIO
-        mmio_write_32(0x030010DC, 0x1); // MISO
+        // mmio_write_32(0x030010D0, 0x3); // CS-GPIO (PWRGPIO 18)
+        mmio_write_32(0x030010C4, 0x3); // CS-GPIO (GPIOA 26)
+        // mmio_write_32(0x030010DC, 0x1); // MISO
         mmio_write_32(0x030010E0, 0x1); // MOSI
         mmio_write_32(0x030010E4, 0x1); // SCK
-        mmio_write_32(0x030010D8, 0x3); // DC
+        // mmio_write_32(0x030010D8, 0x3); // DC
         // mmio_write_32(0x03001038, 0x3); // RESET
 
-        // uart bluetooth
+        // LT9611 reset
+        mmio_write_32(0x03001060, 0x3); // GPIOA 24
+        val = mmio_read_32(0x03020004); // GPIOA DIR
+        val |= (1 << 24); // output
+        mmio_write_32(0x03020004, val);
+
+        val = mmio_read_32(0x03020000); // signal level
+        val |= (1 << 24); // set level to high
+        mmio_write_32(0x03020000, val);
+
+        // i2c1 pinmux
+        mmio_write_32(0x030010D0, 0x102); // SCL + pullup
+        mmio_write_32(0x030010DC, 0x102); // SDA + pullup
+
+        // uart2 pinmux (bluetooth)
         //mmio_write_32(0x03001070, 0x1); // GPIOA 28 UART1 TX
         //mmio_write_32(0x03001074, 0x1); // GPIOA 29 UART1 RX
+
+	// uart1 pinmux
         mmio_write_32(0x03001068, 0x6); // GPIOA 18 UART1 RX
         mmio_write_32(0x03001064, 0x6); // GPIOA 19 UART1 TX
 
@@ -107,7 +124,7 @@ int cvi_board_init(void)
         //mmio_write_32(0x03001068, 0x2); // GPIOA 18 PWM 6
 
         // lcd reset
-        mmio_write_32(0x030010A4, 0x0); // PWRGPIO 0 GPIO_MODE
+        // mmio_write_32(0x030010A4, 0x0); // PWRGPIO 0 GPIO_MODE
 
 	user_led_toggle();
         // lcd backlight
@@ -136,7 +153,6 @@ int cvi_board_init(void)
 	mmio_write_32(0x03001174, 0x7); // spi1 miso  GPIOC4 MIPI_RX3N
 	mmio_write_32(0x03001178, 0x7); // spi1 mosi  GPIOC5 MIPI_RX3P
 	*/
-	
 
         // camera/tp i2c
         mmio_write_32(0x03001090, 0x5); // PWR_GPIO6 IIC4_SCL
@@ -149,14 +165,14 @@ int cvi_board_init(void)
         mmio_write_32(0x0502707c, 0x11);// Unlock PWR_GPIO[4]
 
 	// bitbang i2c
-        mmio_write_32(0x0300103C, 0x03); // GPIOA 15 GPIO_MODE
-	mmio_write_32(0x03001058, 0x03); // GPIOA 27 GPIO_MODE
+        //mmio_write_32(0x0300103C, 0x03); // GPIOA 15 GPIO_MODE
+	//mmio_write_32(0x03001058, 0x03); // GPIOA 27 GPIO_MODE
 
 	// bitbang spi
-	mmio_write_32(0x03001060, 0x03); // GPIOA 24 GPIO_MODE
-	mmio_write_32(0x0300105C, 0x03); // GPIOA 23 GPIO_MODE
-	mmio_write_32(0x03001054, 0x03); // GPIOA 25 GPIO_MODE
-	mmio_write_32(0x03001050, 0x03); // GPIOA 22 GPIO_MODE
+	//mmio_write_32(0x03001060, 0x03); // GPIOA 24 GPIO_MODE
+	//mmio_write_32(0x0300105C, 0x03); // GPIOA 23 GPIO_MODE
+	//mmio_write_32(0x03001054, 0x03); // GPIOA 25 GPIO_MODE
+	//mmio_write_32(0x03001050, 0x03); // GPIOA 22 GPIO_MODE
 
         // wait hardware bootup
         suck_loop(50);

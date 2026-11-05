@@ -37,7 +37,7 @@
 	/delete-property/ pwm-gpio;
 #else
 	// for uboot
-        reset-gpio = <&porte 0 1>;
+        reset-gpio = <&porta 24 1>;
         pwm-gpio = <&porte 2 1>;
 #endif
         /delete-property/ power-ct-gpio;
@@ -47,7 +47,7 @@
 &mipi_tx {
 #ifndef __UBOOT__
 	// for linux kernel
-        reset-gpio = <&porte 0 1>;
+        reset-gpio = <&porta 24 1>;
         pwm-gpio = <&porte 2 1>;
 #else
         /delete-property/ reset-gpio;
@@ -196,9 +196,9 @@
 		sck-gpio = <&porta 22 0>;
 		miso-gpio = <&porta 23 0>;
 		mosi-gpio = <&porta 25 0>;
-		cs-gpio = <&porta 24 GPIO_ACTIVE_LOW>;
+		cs-gpio = <&porta 26 GPIO_ACTIVE_LOW>;
 		num-chipselects = <1>;
-		status = "okay";
+		status = "disabled";
 
 		spidev@0 {
 			compatible = "spidev";
