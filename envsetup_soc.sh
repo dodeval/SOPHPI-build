@@ -466,6 +466,9 @@ function build_tdl_sdk()
   ./build_tdl_sdk.sh all
   test "$?" -ne 0 && print_notice "${FUNCNAME[0]}() failed !!" && popd && return 1
   popd
+  mkdir -p "$SYSTEM_OUT_DIR"/usr/lib
+  cp -a "$TDL_SDK_PATH"/install/"$CHIP_ARCH"/lib/*.so* "$SYSTEM_OUT_DIR"/usr/lib/ || return "$?"
+  cp -a "$TDL_SDK_PATH"/install/"$CHIP_ARCH"/sample/utils/lib/*.so* "$SYSTEM_OUT_DIR"/usr/lib/ || return "$?"
 }
 
 function clean_tdl_sdk()
@@ -694,6 +697,7 @@ function build_all()
   pack_system || return $?
   copy_tools || return $?
   pack_upgrade || return $?
+  pack_burn_image || retun $?
 )}
 
 function clean_all()

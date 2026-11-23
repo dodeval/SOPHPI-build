@@ -272,7 +272,7 @@
                 pll_reg = <0x300207C>;
                 no-mmc;
                 no-sd;
-                status = "okay";
+                status = "disabled";
                 interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
                 interrupt-parent = <&plic0>;
         };
